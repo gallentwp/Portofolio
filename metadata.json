@@ -1,0 +1,8 @@
+{
+  "name": "Gallent Wibisono Purnomo - Premium Portfolio",
+  "description": "A high-end, minimal, and editorial personal portfolio for Gallent Wibisono Purnomo, featuring a dark aesthetic with coral and teal accents.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
