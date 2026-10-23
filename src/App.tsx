@@ -22,17 +22,26 @@ interface RevealProps {
   className?: string;
 }
 
-const Reveal: React.FC<RevealProps> = ({ children, className = '' }) => (
-  <motion.div
-    variants={fade}
-    initial="hidden"
-    whileInView="show"
-    viewport={{ once: true, margin: '-60px' }}
-    className={className}
-  >
-    {children}
-  </motion.div>
-);
+const Reveal: React.FC<RevealProps> = ({ children, className = '' }) => {
+  const prefersReduced =
+    typeof window !== 'undefined' &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // On-mount fade-up. Chosen over scroll-triggered whileInView because the
+  // latter can leave below-the-fold content stuck invisible if the
+  // IntersectionObserver doesn't fire (headless capture, no scroll event,
+  // slow JS). Content visibility must never depend on a scroll handler.
+  return (
+    <motion.div
+      variants={fade}
+      initial={prefersReduced ? 'show' : 'hidden'}
+      animate="show"
+      className={className}
+    >
+      {children}
+    </motion.div>
+  );
+};
 
 const SectionHead = ({ idx, title }: { idx: string; title: string }) => (
   <Reveal className="mb-12 flex items-baseline gap-4">
