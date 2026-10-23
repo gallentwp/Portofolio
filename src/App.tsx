@@ -12,36 +12,26 @@ import { CV_DATA } from './data';
 // locally ("/") and under a GitHub Pages project subpath ("/Portofolio/").
 const asset = (p: string) => `${import.meta.env.BASE_URL}${p.replace(/^\//, '')}`;
 
-const fade = {
-  hidden: { opacity: 0, y: 18 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.22, 0.61, 0.36, 1] as const } },
-};
-
 interface RevealProps {
   children: React.ReactNode;
   className?: string;
 }
 
-const Reveal: React.FC<RevealProps> = ({ children, className = '' }) => {
-  const prefersReduced =
-    typeof window !== 'undefined' &&
-    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  // On-mount fade-up. Chosen over scroll-triggered whileInView because the
-  // latter can leave below-the-fold content stuck invisible if the
-  // IntersectionObserver doesn't fire (headless capture, no scroll event,
-  // slow JS). Content visibility must never depend on a scroll handler.
-  return (
-    <motion.div
-      variants={fade}
-      initial={prefersReduced ? 'show' : 'hidden'}
-      animate="show"
-      className={className}
-    >
-      {children}
-    </motion.div>
-  );
-};
+// On-mount fade-up using explicit initial/animate objects (no variant
+// labels). Scroll-triggered whileInView was leaving below-the-fold
+// content stuck at opacity:0 when the observer didn't fire, so visibility
+// must never depend on scroll. CSS keeps the element visible even if JS
+// animation never runs (see .reveal in index.css).
+const Reveal: React.FC<RevealProps> = ({ children, className = '' }) => (
+  <motion.div
+    className={`reveal ${className}`}
+    initial={{ opacity: 0, y: 18 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.7, ease: [0.22, 0.61, 0.36, 1] }}
+  >
+    {children}
+  </motion.div>
+);
 
 const SectionHead = ({ idx, title }: { idx: string; title: string }) => (
   <Reveal className="mb-12 flex items-baseline gap-4">

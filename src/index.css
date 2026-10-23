@@ -30,6 +30,12 @@
   }
 }
 
+/* Safety net: if JS/motion never runs, revealed blocks stay visible.
+   motion sets an inline opacity/transform that overrides this at runtime. */
+.reveal {
+  opacity: 1;
+}
+
 /* --- Editorial helpers --- */
 .label {
   font-size: 12px;
