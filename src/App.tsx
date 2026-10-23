@@ -8,6 +8,10 @@ import { CV_DATA } from './data';
    accent. No glows, no glass, no gradient theatre.
 ----------------------------------------------------------------- */
 
+// Prefix a /public asset with Vite's base URL so paths resolve both
+// locally ("/") and under a GitHub Pages project subpath ("/Portofolio/").
+const asset = (p: string) => `${import.meta.env.BASE_URL}${p.replace(/^\//, '')}`;
+
 const fade = {
   hidden: { opacity: 0, y: 18 },
   show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.22, 0.61, 0.36, 1] as const } },
@@ -120,13 +124,13 @@ const Hero = () => (
             EST. 2023 — JAKARTA
           </span>
           <img
-            src="/profile.png"
+            src={asset('profile.png')}
             alt="Gallent Wibisono Purnomo"
             className="portrait-img absolute bottom-0 left-1/2 h-[116%] w-auto max-w-none -translate-x-1/2 object-contain object-bottom"
             onError={(e) => {
-              // Fallback to the existing jpg if the cut-out PNG is not present yet
+              // Fallback to the existing jpg if the cut-out PNG is missing
               const img = e.currentTarget;
-              if (!img.src.endsWith('/profile.jpg')) img.src = '/profile.jpg';
+              if (!img.src.endsWith('profile.jpg')) img.src = asset('profile.jpg');
             }}
           />
         </div>
@@ -251,7 +255,7 @@ const Projects = () => (
           <article className="group flex h-full flex-col">
             <div className="relative aspect-[4/5] overflow-hidden border border-ink/20 bg-paper-2">
               <img
-                src={p.image}
+                src={asset(p.image)}
                 alt={p.title}
                 className="h-full w-full object-cover grayscale transition-all duration-700 group-hover:grayscale-0"
                 referrerPolicy="no-referrer"
